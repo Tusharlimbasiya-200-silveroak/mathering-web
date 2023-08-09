@@ -34,7 +34,7 @@ class MGSession(models.Model):
     code = models.IntegerField(default=2001)
     token = models.CharField(max_length=32, default=random_str_32, unique=True)
 
-    target = models.ForeignKey(
+    target = models.ForeignKey( 
         MGFile,
         on_delete=models.SET_NULL,
         blank=True,

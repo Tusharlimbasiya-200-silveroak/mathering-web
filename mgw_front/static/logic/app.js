@@ -82,12 +82,14 @@ const connector = {
                 "keep_reference": referenceKeep
             }),
             success: function (json) {
+                console.log(json)
                 connector.token = json.token;
                 if (connector.token && !connector.alreadyShown) {
                     showPage();
                     connector.alreadyShown = true;
                 }
                 if (connector.token) {
+                    console.log()
                     if (!targetKeep) {
                         connector.updateDropZoneUrl("target");
                         connector.targetUploaded = false;

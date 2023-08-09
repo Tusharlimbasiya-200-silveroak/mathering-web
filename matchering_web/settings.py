@@ -20,8 +20,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-with open(os.path.join(BASE_DIR, ".secret_key")) as f:
-    SECRET_KEY = f.read().strip()
+SECRET_KEY ='5wuzid$bhshhgd%lm332f5x%q^5xbx+#=o%q6554_w!3trn'
 
 DEBUG = True
 
@@ -69,7 +68,7 @@ RQ_QUEUES = {
 }
 
 TIME_ZONE = "UTC"
-
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "/static/"
 
 MEDIA_ROOT = os.path.join(DATA_DIR, "media")

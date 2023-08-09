@@ -37,10 +37,11 @@ from mgw_back.tasks import process
 from mgw_back.utilities import without_folder
 
 
-class SessionView(APIView):
+class  SessionView(APIView):
     @staticmethod
     def get_session(token, raise404=True):
         try:
+
             return MGSession.objects.get(token=token)
         except MGSession.DoesNotExist:
             if raise404:
@@ -49,6 +50,7 @@ class SessionView(APIView):
     def get(self, request, token, format=None):
         session = self.get_session(token)
         serializer = MGSessionDetailSerializer(session)
+        print(serializer.data,'nnnnnnnnnnnnnnnn')
         return Response(serializer.data)
 
 
@@ -76,24 +78,31 @@ class SessionCreate(APIView):
 
         previous_session = (
             SessionView.get_session(previous_token, raise404=False)
+
             if previous_token
             else None
         )
+        print(previous_session,'kkkkkkkkkkkk')
+       
         session = MGSession.objects.create()
+ 
+    
 
         if previous_session:
             if keep_target:
                 session.target = previous_session.target
                 session.target.save()
             if keep_reference:
-                session.reference = previous_session.reference
+                session.reference = previous_session.reference  
                 session.reference.save()
+                print('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj')
             session.save()
             self.remove_previous(previous_session, keep_target, keep_reference)
 
         self.remove_old()
 
         serializer = MGSessionSerializer(session)
+        print(serializer.data,'kkkkkkkkkkkkkkkkkkkkkk')
         return Response(serializer.data)
 
 
@@ -102,16 +111,17 @@ class UploadFile(APIView):
 
     def post(self, request, token, file_type, format=None):
         session = SessionView.get_session(token)
+        print()
 
         if getattr(session, file_type) or session.code != 2001:
             raise ValidationError
 
         serializer = MGFileSerializer(data=request.data)
+        
         if serializer.is_valid():
             file = request.FILES["file"]
             instance = MGFile.objects.create(file=file, title=without_folder(file.name))
             setattr(session, file_type, instance)
-
             if session.target and session.reference:
                 session.code = 2002
                 session.save()

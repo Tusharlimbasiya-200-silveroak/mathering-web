@@ -35,9 +35,10 @@ function redrawUpload(file_type) {
 }
 
 function redrawAll(keep_target = false, keep_reference = false) {
+    
     if (!keep_target) { redrawUpload("target"); }
     if (!keep_reference) { redrawUpload("reference"); }
-
+    console.log('barobar')
     redrawProcess();
 
     let from;
